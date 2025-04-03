@@ -17,10 +17,23 @@ public class RentACatImpl implements RentACat {
 	 * @return true if cat exists and was rented out, false otherwise
 	 */
 
-	public boolean returnCat(int id) {
-		// TODO: Fill in
-		return false;
+	 public boolean returnCat(int id) {
+		for (Cat cat : cats) {
+			if (cat.getId() == id) {  
+				if (!cat.getRented()) { 
+					System.out.println(cat.getName() + " is already here!");
+					return false;
+				}
+				cat.returnCat(); 
+				System.out.println("Welcome back, " + cat.getName() + "!");
+				return true;
+			}
+		}
+
+		
+		return false; 
 	}
+	
 
 	/**
 	 * Rent a cat. This should call the .rentCat() method on the cat for the
@@ -31,11 +44,24 @@ public class RentACatImpl implements RentACat {
 	 * @param id the ID of the cat to rent
 	 * @return true if cat exists and was not rented out, false otherwise
 	 */
-
-	public boolean rentCat(int id) {
-		// TODO: Fill in
+	 public boolean rentCat(int id) {
+		for (Cat cat : cats) {
+			if (cat.getId() == id) {
+				if (!cat.getRented()) {
+					cat.rentCat();
+					System.out.println(cat.getName() + " has been rented.");
+					return true;
+				} else {
+					// The test expects "Sorry, Old Deuteronomy is not here!" if cat is already rented
+					System.out.println("Sorry, " + cat.getName() + " is not here!");
+					return false;
+				}
+			}
+		}
+		System.out.println("Invalid cat ID.");
 		return false;
 	}
+	
 
 	/**
 	 * Rename a cat. This calls the .renameCat(String) method on the cat for the
@@ -47,7 +73,16 @@ public class RentACatImpl implements RentACat {
 	 */
 
 	public boolean renameCat(int id, String name) {
-		// TODO: Fill in
+		
+		for(Cat cat : cats){
+			if(cat.getId() == id){
+				cat.renameCat(name);
+				return true;
+			}
+		}
+		
+		System.out.println("Invalid cat ID.");
+
 		return false;
 	}
 
@@ -62,8 +97,16 @@ public class RentACatImpl implements RentACat {
 	 */
 
 	public String listCats() {
-		// TODO: Fill in
-		return "WRITE CODE FOR THIS";
+		StringBuilder result = new StringBuilder();
+
+		for(Cat cat : cats){
+			if(!cat.getRented()){
+				result.append(cat.toString() + "\n");
+			}
+		}
+
+		return result.toString();
+	
 	}
 
 	/**
